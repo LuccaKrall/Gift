@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎉 Você Ganhou! 🎉</title>
+    <style>
+        :root {
+            --color-primary: #ff00de;
+            --color-secondary: #00ffdd;
+            --color-accent: #ffdd00;
+            --color-light: #ffffff;
+            --color-dark: #111;
+        }
+
+        @keyframes blink {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 10px var(--color-accent), 0 0 20px var(--color-accent), 0 0 30px var(--color-primary);
+                background-color: var(--color-primary);
+            }
+            50% {
+                transform: scale(1.08);
+                box-shadow: 0 0 20px var(--color-secondary), 0 0 35px var(--color-secondary), 0 0 50px var(--color-accent);
+                background-color: var(--color-secondary);
+                color: var(--color-dark);
+            }
+        }
+
+        @keyframes confetti-fall {
+            0% { transform: translateY(-100vh) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(720deg); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-8px) rotate(-5deg); }
+            20%, 40%, 60%, 80% { transform: translateX(8px) rotate(5deg); }
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(45deg, #ff006a, #7000ff, #00b8ff);
+            background-size: 300% 300%;
+            animation: gradient-animation 10s ease infinite;
+            color: var(--color-light);
+            text-align: center;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .main-title {
+            font-size: 2.8rem;
+            font-weight: bold;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.8), 0 0 25px rgba(0, 0, 0, 0.5);
+            animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both infinite;
+            z-index: 10;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            width: 100%;
+            max-width: 400px;
+            margin-top: 30px;
+        }
+
+        .win-button {
+            padding: 20px 15px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-light);
+            border: 4px solid var(--color-light);
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            animation: blink 1s infinite;
+        }
+
+        .win-button:nth-child(2) {
+            animation-delay: 0.2s;
+            animation-duration: 0.8s;
+        }
+
+        .win-button:nth-child(3) {
+            animation-delay: 0.5s;
+            animation-duration: 1.2s;
+        }
+
+        .win-button:nth-child(4) {
+            animation-delay: 0.3s;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--color-accent);
+            opacity: 0.8;
+            top: -20px;
+            animation: confetti-fall 5s linear infinite;
+        }
+
+        /* Estilos para a tela pop-up da imagem */
+        .image-popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .image-popup-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .image-popup-content {
+            background-color: var(--color-dark);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+            text-align: center;
+            position: relative;
+            
+            /* --- AJUSTE AQUI --- */
+            width: 90%; /* Usa 90% da largura da tela */
+            max-width: 350px; /* Mas não deixa passar de 350px de largura */
+        }
+
+        .image-popup-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            border: 5px solid var(--color-accent);
+
+            /* --- AJUSTE AQUI --- */
+            max-height: 50vh; /* A altura da imagem não passará de 50% da altura da tela */
+            object-fit: contain; /* Garante que a imagem apareça inteira sem distorcer */
+        }
+
+        .image-popup-content h2 {
+            color: var(--color-primary);
+            margin-top: 15px;
+            font-size: 1.8rem;
+        }
+
+        .image-popup-content p {
+            color: var(--color-light);
+            margin-bottom: 20px;
+        }
+
+        .close-popup {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 2rem;
+            color: var(--color-light);
+            cursor: pointer;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+            line-height: 1; /* Alinha o 'X' melhor */
+        }
+    </style>
+</head>
+<body>
+
+    <div id="confetti-container"></div>
+
+    <h1 class="main-title">Parabéns, Monica!</h1>
+    <p style="font-size: 1.2rem; z-index: 10;">Você acaba de ganhar um presente!</p>
+
+    <div class="button-container">
+        <button class="win-button" onclick="showPrize()">Clique para resgatar!</button>
+        <button class="win-button" onclick="showPrize()">Resgate seu prêmio AGORA!</button>
+        <button class="win-button" onclick="showPrize()">ÚLTIMA CHANCE!</button>
+        <button class="win-button" onclick="showPrize()">Seu presente expira em 1 min!</button>
+    </div>
+
+    <div id="imagePopup" class="image-popup-overlay">
+        <div class="image-popup-content">
+            <span class="close-popup" onclick="closePopup()">&times;</span>
+            <h2>Seu Prêmio Exclusivo Revelado!</h2>
+            <p>Prepare-se para esta incrível surpresa que separamos para você, Monica!</p>
+            
+            <img src="IMG_20220519_182459.jpg" alt="Seu Presente Incrível">
+            <p style="margin-top: 20px; font-weight: bold;">Feche os Olhos e Siga a Alice!</p>
+        </div>
+    </div>
+
+    <script>
+        function showPrize() {
+            document.getElementById('imagePopup').classList.add('visible');
+        }
+
+        function closePopup() {
+            document.getElementById('imagePopup').classList.remove('visible');
+            setTimeout(() => {
+                alert("VOCÊ FOI SELECIONADA! Para receber seu prêmio exclusivo, complete nosso rápido cadastro de segurança agora mesmo!");
+            }, 300);
+        }
+
+        const confettiContainer = document.getElementById('confetti-container');
+        const confettiCount = 100;
+
+        for (let i = 0; i < confettiCount; i++) {
+            const confetti = document.createElement('div');
+            confetti.classList.add('confetti');
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.animationDelay = Math.random() * 5 + 's';
+            confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            confetti.style.width = Math.random() * 8 + 5 + 'px';
+            confetti.style.height = confetti.style.width;
+            confetti.style.opacity = Math.random();
+            
+            confettiContainer.appendChild(confetti);
+        }
+    </script>
+
+</body>
+</html>
